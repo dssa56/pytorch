@@ -176,9 +176,6 @@
 - func: empty_like(Tensor self) -> Tensor
   variants: function
 
-- func: empty_like(Tensor self, Type dtype) -> Tensor
-  variants: function
-
 - func: embedding_bag(Tensor weight, IndexTensor indices, IndexTensor offsets, bool scale_grad_by_freq=false, int64_t mode=0, bool sparse=false) -> (Tensor, Tensor, Tensor)
   variants: function
   dispatch:
@@ -209,6 +206,9 @@
 - func: ger(Tensor self, Tensor vec2) -> Tensor
 
 - func: ger_out(Tensor result, Tensor self, Tensor vec2) -> Tensor
+  variants: function
+
+- func: gimme_a_one(Tensor self) -> Tensor
   variants: function
 
 - func: index(Tensor self, TensorList indices) -> Tensor
@@ -261,14 +261,11 @@
 - func: nnpack_spatial_convolution_backward_weight(Tensor input, IntList weight_size, Tensor grad_output, int64_t kW, int64_t kH, int64_t padW, int64_t padH) -> Tensor
   variants: function
 
-- func: ones_like(Tensor self) -> Tensor
+- func: non_max_suppression(Tensor input, Tensor socres, double thresh) -> (Tensor, Tensor)
   variants: function
-
-- func: ones_like_out(Tensor result, Tensor self) -> Tensor
-  variants: function
-
-- func: ones_like(Tensor self, Type dtype) -> Tensor
-  variants: function
+  dispatch:
+    CPU: non_max_suppression_cpu
+    CUDA: non_max_suppression_cuda
 
 - func: permute(Tensor self, IntList dims) -> Tensor
   variants: method  # This is method-only to match the previous tensor API. In the future we could make this a function too.
@@ -278,19 +275,7 @@
 - func: rand_like(Tensor self) -> Tensor
   variants: function
 
-- func: rand_like_out(Tensor result, Tensor self) -> Tensor
-  variants: function
-
-- func: rand_like(Tensor self, Type dtype) -> Tensor
-  variants: function
-
 - func: randn_like(Tensor self) -> Tensor
-  variants: function
-
-- func: randn_like_out(Tensor result, Tensor self) -> Tensor
-  variants: function
-
-- func: randn_like(Tensor self, Type dtype) -> Tensor
   variants: function
 
 - func: repeat(Tensor self, IntList repeats) -> Tensor
@@ -366,9 +351,6 @@
 
 - func: type_as(Tensor self, Tensor other) -> Tensor
 
-- func: _unsafe_view(Tensor self, IntList size) -> Tensor
-  variants: function
-
 - func: unsqueeze(Tensor self, int64_t dim) -> Tensor
 
 - func: unsqueeze_(Tensor self, int64_t dim) -> Tensor
@@ -383,15 +365,6 @@
   dispatch:
     CPU: _s_where_cpu
     CUDA: _s_where_cuda
-
-- func: zeros_like(Tensor self) -> Tensor
-  variants: function
-
-- func: zeros_like_out(Tensor result, Tensor self) -> Tensor
-  variants: function
-
-- func: zeros_like(Tensor self, Type dtype) -> Tensor
-  variants: function
 
 - func: _standard_gamma_grad(Tensor self, Tensor output) -> Tensor
   dispatch:
